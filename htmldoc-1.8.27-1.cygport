@@ -1,0 +1,15 @@
+DESCRIPTION="Indexes HTML and converts into PostScript and PDF"
+HOMEPAGE="http://www.htmldoc.org/"
+SRC_URI="http://ftp.easysw.com/pub/${PN}/${PV}/${P}-source.tar.bz2"
+PATCH_URI="mirror://portage/app-text/${PN}/files/${PN}-sscanf-overflows.patch"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	autoconf
+	cygconf --enable-gui --enable-openssl
+	cygmake
+}
+
+USE_DESTDIR=0
+DOCS="CHANGES.txt"

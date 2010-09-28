@@ -1,5 +1,5 @@
 category: Devel Doc
-requires: libfltk1.1 libgcc1 libjpeg7 libpng12 libXpm4 libopenssl098 zlib0
+requires: libfltk1.1 libjpeg8 libpng14 libXpm4 libopenssl098 zlib0
 sdesc: "Indexes HTML and converts to PS and PDF"
 ldesc: "HTMLDOC converts Hyper-Text Markup Language (HTML) input files 
 into indexed HTML, Adobe® PostScript®, or Adobe Portable Document Format 

@@ -1,5 +1,5 @@
 NAME="htmldoc"
-VERSION=1.9.x-r1707
+VERSION=1.9.x-r1712
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Indexes HTML and converts to PS and PDF"
@@ -7,9 +7,9 @@ DESCRIPTION="HTMLDOC converts Hyper-Text Markup Language (HTML) input files
 into indexed HTML, Adobe PostScript, or Adobe Portable Document Format (PDF)
 files.  HTMLDOC can be used as a standalone application, in a batch document
 processing environment, or as a web-based report generation application."
-HOMEPAGE="http://www.htmldoc.org/"
-#SRC_URI="http://ftp.easysw.com/pub/${PN}/snapshots/${P}.tar.bz2"
-SVN_URI="http://svn.easysw.com/public/htmldoc"
+HOMEPAGE="http://www.msweet.org/"
+#SRC_URI="http://www.msweet.org/files/project1/htmldoc-${VERSION}-source.tar.bz2"
+SVN_URI="http://svn.msweet.org/htmldoc"
 SVN_BRANCH="trunk"
 SVN_REV=${VERSION#*-r}
 PATCH_URI="1.9.x-ssl.patch"

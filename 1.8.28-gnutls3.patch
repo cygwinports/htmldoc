@@ -1,0 +1,13 @@
+--- origsrc/htmldoc-1.8.28/configure.ac	2014-01-05 21:51:51.000000000 -0600
++++ src/htmldoc-1.8.28/configure.ac	2015-02-11 00:32:03.391716800 -0600
+@@ -173,9 +173,8 @@ if test x$enable_ssl != xno; then
+ 	    dnl included...
+ 	    SAVELIBS="$LIBS"
+ 
+-	    TEST_GNUTLS_LIBS=`libgnutls-config --libs`
+ 	    AC_CHECK_LIB(gnutls, gnutls_init,
+-		[SSLLIBS=$TEST_GNUTLS_LIBS
++		[SSLLIBS=-lgnutls
+ 		 AC_DEFINE(HAVE_SSL)
+ 		 AC_DEFINE(HAVE_GNUTLS)],,
+ 		$TEST_GNUTLS_LIBS)

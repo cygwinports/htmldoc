@@ -1,5 +1,5 @@
 NAME="htmldoc"
-VERSION=1.9.x-r1712
+VERSION=1.8.28
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Indexes HTML and converts to PS and PDF"
@@ -8,19 +8,70 @@ into indexed HTML, Adobe PostScript, or Adobe Portable Document Format (PDF)
 files.  HTMLDOC can be used as a standalone application, in a batch document
 processing environment, or as a web-based report generation application."
 HOMEPAGE="http://www.msweet.org/"
-#SRC_URI="http://www.msweet.org/files/project1/htmldoc-${VERSION}-source.tar.bz2"
-SVN_URI="http://svn.msweet.org/htmldoc"
-SVN_BRANCH="trunk"
-SVN_REV=${VERSION#*-r}
-PATCH_URI="1.9.x-ssl.patch"
-inherit svn
+SRC_URI="http://www.msweet.org/files/project1/htmldoc-${VERSION}-source.tar.bz2"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/htmldoc.git/plain/htmldoc-1.8.27-desktop-icon.patch
+	http://pkgs.fedoraproject.org/cgit/htmldoc.git/plain/htmldoc-1.8.28-errno.patch
+	http://pkgs.fedoraproject.org/cgit/htmldoc.git/plain/htmldoc-1.8.27-system-fonts.patch
+	1.8.28-gnutls3.patch
+"
+
+REQUIRES="font-dejavu-ttf ghostscript-fonts-std"
+
+CYGPORT_USE_UNSTABLE_API=1
+src_unpack_hook() {
+	pushd fonts
+	rm -f *.pfa *.afm
+	inform "Symlinking system fonts"
+ln -sf /usr/share/ghostscript/fonts/n022003l.afm Courier.afm
+ln -sf /usr/share/ghostscript/fonts/n022004l.afm Courier-Bold.afm
+ln -sf /usr/share/ghostscript/fonts/n022024l.afm Courier-BoldOblique.afm
+ln -sf /usr/share/ghostscript/fonts/n022024l.pfb Courier-BoldOblique.pfb
+ln -sf /usr/share/ghostscript/fonts/n022004l.pfb Courier-Bold.pfb
+ln -sf /usr/share/ghostscript/fonts/n022023l.afm Courier-Oblique.afm
+ln -sf /usr/share/ghostscript/fonts/n022023l.pfb Courier-Oblique.pfb
+ln -sf /usr/share/ghostscript/fonts/n022003l.pfb Courier.pfb
+ln -sf /usr/share/ghostscript/fonts/d050000l.afm Dingbats.afm
+ln -sf /usr/share/ghostscript/fonts/d050000l.pfb Dingbats.pfb
+ln -sf /usr/share/ghostscript/fonts/n019003l.afm Helvetica.afm
+ln -sf /usr/share/ghostscript/fonts/n019004l.afm Helvetica-Bold.afm
+ln -sf /usr/share/ghostscript/fonts/n019024l.afm Helvetica-BoldOblique.afm
+ln -sf /usr/share/ghostscript/fonts/n019024l.pfb Helvetica-BoldOblique.pfb
+ln -sf /usr/share/ghostscript/fonts/n019004l.pfb Helvetica-Bold.pfb
+ln -sf /usr/share/ghostscript/fonts/n019023l.afm Helvetica-Oblique.afm
+ln -sf /usr/share/ghostscript/fonts/n019023l.pfb Helvetica-Oblique.pfb
+ln -sf /usr/share/ghostscript/fonts/n019003l.pfb Helvetica.pfb
+ln -sf /usr/share/ghostscript/fonts/s050000l.afm Symbol.afm
+ln -sf /usr/share/ghostscript/fonts/s050000l.pfb Symbol.pfb
+ln -sf /usr/share/ghostscript/fonts/n021004l.afm Times-Bold.afm
+ln -sf /usr/share/ghostscript/fonts/n021024l.afm Times-BoldItalic.afm
+ln -sf /usr/share/ghostscript/fonts/n021024l.pfb Times-BoldItalic.pfb
+ln -sf /usr/share/ghostscript/fonts/n021004l.pfb Times-Bold.pfb
+ln -sf /usr/share/ghostscript/fonts/n021023l.afm Times-Italic.afm
+ln -sf /usr/share/ghostscript/fonts/n021023l.pfb Times-Italic.pfb
+ln -sf /usr/share/ghostscript/fonts/n021003l.afm Times-Roman.afm
+ln -sf /usr/share/ghostscript/fonts/n021003l.pfb Times-Roman.pfb
+ln -sf /usr/share/fonts/TTF/DejaVuSans-BoldOblique.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSans-Bold.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSansMono-BoldOblique.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSansMono-Bold.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSansMono-Oblique.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSansMono.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSans-Oblique.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSans.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSerif-BoldItalic.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSerif-Bold.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSerif-Italic.ttf
+ln -sf /usr/share/fonts/TTF/DejaVuSerif.ttf
+	popd
+}
 
 src_compile() {
 	lndirs
 	cd ${B}
 	autoconf
 	CYGCONF_SOURCE=${B} \
-	cygconf --enable-ssl
+	cygconf --enable-ssl --enable-gnutls --disable-openssl
 	cygmake
 }
 

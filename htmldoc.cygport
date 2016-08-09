@@ -1,6 +1,6 @@
 NAME="htmldoc"
 VERSION=1.8.28
-RELEASE=1
+RELEASE=2
 CATEGORY="Devel"
 SUMMARY="Indexes HTML and converts to PS and PDF"
 DESCRIPTION="HTMLDOC converts Hyper-Text Markup Language (HTML) input files
@@ -16,7 +16,9 @@ PATCH_URI="
 	1.8.28-gnutls3.patch
 "
 
-REQUIRES="font-dejavu-ttf ghostscript-fonts-std"
+REQUIRES="dejavu-fonts ghostscript-fonts-std t1utils ttf2pt1"
+
+DIFF_EXCLUDES="configure"
 
 CYGPORT_USE_UNSTABLE_API=1
 src_unpack_hook() {
@@ -51,18 +53,18 @@ ln -sf /usr/share/ghostscript/fonts/n021023l.afm Times-Italic.afm
 ln -sf /usr/share/ghostscript/fonts/n021023l.pfb Times-Italic.pfb
 ln -sf /usr/share/ghostscript/fonts/n021003l.afm Times-Roman.afm
 ln -sf /usr/share/ghostscript/fonts/n021003l.pfb Times-Roman.pfb
-ln -sf /usr/share/fonts/TTF/DejaVuSans-BoldOblique.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSans-Bold.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSansMono-BoldOblique.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSansMono-Bold.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSansMono-Oblique.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSansMono.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSans-Oblique.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSans.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSerif-BoldItalic.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSerif-Bold.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSerif-Italic.ttf
-ln -sf /usr/share/fonts/TTF/DejaVuSerif.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSans-BoldOblique.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSans-Bold.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSansMono-BoldOblique.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSansMono-Bold.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSansMono-Oblique.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSansMono.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSans-Oblique.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSans.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSerif-BoldItalic.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSerif-Bold.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSerif-Italic.ttf
+ln -sf /usr/share/fonts/dejavu/DejaVuSerif.ttf
 	popd
 }
 
@@ -75,5 +77,20 @@ src_compile() {
 	cygmake
 }
 
-USE_DESTDIR=0
+src_install() {
+	cd ${B}
+	USE_DESTDIR=0 cyginstall
+
+	for s in 16 24 32 48 64 96 128
+	do
+		insinto /usr/share/icons/hicolor/${s}x${s}/apps
+		newins ${S}/desktop/htmldoc-$s.png htmldoc.png
+	done
+
+	insinto /usr/share/mime/packages
+	doins ${S}/desktop/htmldoc.xml
+
+	domenu ${S}/desktop/htmldoc.desktop
+}
+
 DOCS="CHANGES.txt"
